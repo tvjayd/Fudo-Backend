@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "fudo-api-collection",
+		"name": "Fudo API Collection",
+		"description": "Complete API collection for Fudo application with JWT authentication and user health details",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.token) {",
+									"        pm.environment.set(\"auth_token\", jsonData.data.token);",
+									"        pm.environment.set(\"user_id\", jsonData.data.user.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": "Register a new user. Health data is optional and can be included in the request body."
+					},
+					"response": []
+				},
+				{
+					"name": "Register User with Health Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.token) {",
+									"        pm.environment.set(\"auth_token\", jsonData.data.token);",
+									"        pm.environment.set(\"user_id\", jsonData.data.user.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jane Smith\",\n    \"email\": \"jane.smith@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"age\": 28,\n    \"weight\": 65.5,\n    \"height\": 165.0,\n    \"gender\": \"female\",\n    \"fitness_plan\": \"weight_loss\",\n    \"disease\": \"None\",\n    \"lifestyle\": \"Moderately active\",\n    \"allergies\": \"Dairy, Gluten\",\n    \"workout_type\": \"gym\",\n    \"workout_intense_type\": \"Moderate\",\n    \"workout_time\": \"45 minutes\",\n    \"meal_type\": \"veg\",\n    \"type_of_test\": \"Weight Loss Diet\",\n    \"ingredients\": [\"chicken\", \"rice\", \"broccoli\", \"spinach\"],\n    \"ingredient_category\": \"veggies\",\n    \"food_preparation_materials\": [\"olive oil\", \"turmeric\", \"garlic\", \"ginger\"],\n    \"bread_type\": \"Whole wheat\",\n    \"rice_type\": \"Brown rice\",\n    \"sprouts_material\": [\"mung beans\", \"chickpeas\", \"lentils\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": "Register a new user with complete health data included."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.token) {",
+									"        pm.environment.set(\"auth_token\", jsonData.data.token);",
+									"        pm.environment.set(\"user_id\", jsonData.data.user.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "Login user and receive JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"me"
+							]
+						},
+						"description": "Get authenticated user profile with health details if available"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						},
+						"description": "Logout user and invalidate JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.token) {",
+									"        pm.environment.set(\"auth_token\", jsonData.data.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"refresh"
+							]
+						},
+						"description": "Refresh JWT token and get a new token"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for user registration, login, logout, and token management"
+		},
+		{
+			"name": "Health Details",
+			"item": [
+				{
+					"name": "Get Health Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health-details"
+							]
+						},
+						"description": "Get authenticated user's health details"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Health Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"age\": 30,\n    \"weight\": 75.5,\n    \"height\": 175.0,\n    \"gender\": \"male\",\n    \"fitness_plan\": \"muscle_building\",\n    \"disease\": \"None\",\n    \"lifestyle\": \"Very active\",\n    \"allergies\": \"Peanuts\",\n    \"workout_type\": \"gym\",\n    \"workout_intense_type\": \"High intensity\",\n    \"workout_time\": \"60 minutes\",\n    \"meal_type\": \"non_veg\",\n    \"type_of_test\": \"High Protein Diet\",\n    \"ingredients\": [\"chicken\", \"beef\", \"eggs\", \"rice\", \"sweet potato\"],\n    \"ingredient_category\": \"mass\",\n    \"food_preparation_materials\": [\"olive oil\", \"coconut oil\", \"turmeric\", \"garlic\", \"black pepper\"],\n    \"bread_type\": \"Multigrain\",\n    \"rice_type\": \"White rice\",\n    \"sprouts_material\": [\"mung beans\", \"chickpeas\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health-details"
+							]
+						},
+						"description": "Create health details for authenticated user. All fields are optional."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Health Details (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"age\": 31,\n    \"weight\": 76.0,\n    \"height\": 175.0,\n    \"gender\": \"male\",\n    \"fitness_plan\": \"muscle_building\",\n    \"workout_type\": \"gym\",\n    \"meal_type\": \"non_veg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health-details"
+							]
+						},
+						"description": "Update health details. Only include fields you want to update. Creates health details if they don't exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Health Details (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"weight\": 77.0,\n    \"workout_time\": \"90 minutes\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health-details"
+							]
+						},
+						"description": "Partially update health details. Only include fields you want to update."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Health Details",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health-details"
+							]
+						},
+						"description": "Delete health details for authenticated user"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing user health details"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+
