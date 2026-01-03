@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,5 +75,29 @@ class User extends Authenticatable implements JWTSubject
     public function healthDetail(): HasOne
     {
         return $this->hasOne(UserHealthDetail::class);
+    }
+
+    /**
+     * Get the meal plans for the user.
+     */
+    public function mealPlans(): HasMany
+    {
+        return $this->hasMany(MealPlan::class);
+    }
+
+    /**
+     * Get the meal trackings for the user.
+     */
+    public function mealTrackings(): HasMany
+    {
+        return $this->hasMany(MealTracking::class);
+    }
+
+    /**
+     * Get the feedbacks for the user.
+     */
+    public function feedbacks(): HasMany
+    {
+        return $this->hasMany(UserFeedback::class);
     }
 }

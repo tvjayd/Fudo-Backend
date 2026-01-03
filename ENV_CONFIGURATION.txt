@@ -1,0 +1,60 @@
+# ============================================
+# IMAGE GENERATION CONFIGURATION
+# Add these lines to your .env file
+# ============================================
+
+# Choose your image generation provider:
+# Options: openai, stability, replicate, huggingface
+IMAGE_GENERATION_PROVIDER=openai
+
+# ============================================
+# OPTION 1: OpenAI DALL-E (Recommended)
+# ============================================
+# Get API key from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=sk-your-api-key-here
+OPENAI_IMAGE_MODEL=dall-e-3
+OPENAI_IMAGE_SIZE=1024x1024
+OPENAI_IMAGE_QUALITY=standard
+OPENAI_IMAGE_STYLE=natural
+
+# ============================================
+# OPTION 2: Stability AI
+# ============================================
+# Get API key from: https://platform.stability.ai/
+# STABILITY_API_KEY=your-api-key-here
+# STABILITY_MODEL=stable-diffusion-xl-1024-v1-0
+# STABILITY_WIDTH=1024
+# STABILITY_HEIGHT=1024
+
+# ============================================
+# OPTION 3: Replicate
+# ============================================
+# Get API key from: https://replicate.com/account/api-tokens
+# REPLICATE_API_KEY=your-api-key-here
+# REPLICATE_MODEL=stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b
+
+# ============================================
+# OPTION 4: Hugging Face
+# ============================================
+# Get API key from: https://huggingface.co/settings/tokens
+# HUGGINGFACE_API_KEY=your-api-key-here
+# HUGGINGFACE_MODEL=stabilityai/stable-diffusion-xl-base-1.0
+
+# ============================================
+# OPTIONAL SETTINGS
+# ============================================
+# Store images locally instead of using remote URLs
+IMAGE_STORE_LOCALLY=false
+IMAGE_STORAGE_PATH=public/meal-images
+
+# Fallback to placeholder images if generation fails
+IMAGE_USE_PLACEHOLDER_FALLBACK=true
+
+# ============================================
+# QUICK SETUP (OpenAI - Copy & Paste)
+# ============================================
+# 1. Get your OpenAI API key from https://platform.openai.com/api-keys
+# 2. Replace 'sk-your-api-key-here' with your actual key
+# 3. Run: php artisan config:clear
+# 4. Done! Images will be generated automatically when creating meal plans
+

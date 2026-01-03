@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserHealthRequest;
 use App\Http\Requests\UpdateUserHealthRequest;
+use App\Http\Resources\UserHealthDetailResource;
 use App\Models\UserHealthDetail;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserHealthController extends BaseController
 {
@@ -30,7 +32,9 @@ class UserHealthController extends BaseController
                 return $this->notFoundResponse('Health details not found');
             }
 
-            return $this->successResponse(['health_detail' => $healthDetail], 'Health details retrieved successfully');
+            return $this->successResponse(['health_detail' => new UserHealthDetailResource($healthDetail)], 'Health details retrieved successfully');
+        } catch (JWTException $e) {
+            return $this->unauthorizedResponse('Unauthorized');
         } catch (\Exception $e) {
             return $this->errorResponse('Failed to retrieve health details: ' . $e->getMessage(), null, 500);
         }
@@ -79,7 +83,9 @@ class UserHealthController extends BaseController
                 'sprouts_material' => $request->sprouts_material,
             ]);
 
-            return $this->successResponse(['health_detail' => $healthDetail], 'Health details created successfully', 201);
+            return $this->successResponse(['health_detail' => new UserHealthDetailResource($healthDetail)], 'Health details created successfully', 201);
+        } catch (JWTException $e) {
+            return $this->unauthorizedResponse('Unauthorized');
         } catch (\Exception $e) {
             return $this->errorResponse('Failed to create health details: ' . $e->getMessage(), null, 500);
         }
@@ -127,35 +133,32 @@ class UserHealthController extends BaseController
                     'sprouts_material' => $request->sprouts_material,
                 ]);
 
-                return $this->successResponse(['health_detail' => $healthDetail], 'Health details created successfully', 201);
+                return $this->successResponse(['health_detail' => new UserHealthDetailResource($healthDetail)], 'Health details created successfully', 201);
             }
 
-            // Update existing health detail
-            $healthDetail->update([
-                'age' => $request->age ?? $healthDetail->age,
-                'weight' => $request->weight ?? $healthDetail->weight,
-                'height' => $request->height ?? $healthDetail->height,
-                'gender' => $request->gender ?? $healthDetail->gender,
-                'fitness_plan' => $request->fitness_plan ?? $healthDetail->fitness_plan,
-                'disease' => $request->disease ?? $healthDetail->disease,
-                'lifestyle' => $request->lifestyle ?? $healthDetail->lifestyle,
-                'allergies' => $request->allergies ?? $healthDetail->allergies,
-                'workout_type' => $request->workout_type ?? $healthDetail->workout_type,
-                'workout_intense_type' => $request->workout_intense_type ?? $healthDetail->workout_intense_type,
-                'workout_time' => $request->workout_time ?? $healthDetail->workout_time,
-                'meal_type' => $request->meal_type ?? $healthDetail->meal_type,
-                'type_of_test' => $request->type_of_test ?? $healthDetail->type_of_test,
-                'ingredients' => $request->ingredients ?? $healthDetail->ingredients,
-                'ingredient_category' => $request->ingredient_category ?? $healthDetail->ingredient_category,
-                'food_preparation_materials' => $request->food_preparation_materials ?? $healthDetail->food_preparation_materials,
-                'bread_type' => $request->bread_type ?? $healthDetail->bread_type,
-                'rice_type' => $request->rice_type ?? $healthDetail->rice_type,
-                'sprouts_material' => $request->sprouts_material ?? $healthDetail->sprouts_material,
-            ]);
+            // Update existing health detail - only update fields that are provided
+            $updateData = [];
+            $fields = [
+                'age', 'weight', 'height', 'gender', 'fitness_plan', 'disease', 
+                'lifestyle', 'allergies', 'workout_type', 'workout_intense_type', 
+                'workout_time', 'meal_type', 'type_of_test', 'ingredients', 
+                'ingredient_category', 'food_preparation_materials', 'bread_type', 
+                'rice_type', 'sprouts_material'
+            ];
+            
+            foreach ($fields as $field) {
+                if ($request->has($field)) {
+                    $updateData[$field] = $request->$field;
+                }
+            }
+            
+            $healthDetail->update($updateData);
 
             $healthDetail->refresh();
 
-            return $this->successResponse(['health_detail' => $healthDetail], 'Health details updated successfully');
+            return $this->successResponse(['health_detail' => new UserHealthDetailResource($healthDetail)], 'Health details updated successfully');
+        } catch (JWTException $e) {
+            return $this->unauthorizedResponse('Unauthorized');
         } catch (\Exception $e) {
             return $this->errorResponse('Failed to update health details: ' . $e->getMessage(), null, 500);
         }
@@ -184,6 +187,8 @@ class UserHealthController extends BaseController
             $healthDetail->delete();
 
             return $this->successResponse(null, 'Health details deleted successfully');
+        } catch (JWTException $e) {
+            return $this->unauthorizedResponse('Unauthorized');
         } catch (\Exception $e) {
             return $this->errorResponse('Failed to delete health details: ' . $e->getMessage(), null, 500);
         }

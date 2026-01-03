@@ -1,0 +1,1053 @@
+{
+	"info": {
+		"_postman_id": "fudo-backend-api-collection",
+		"name": "Fudo Backend API",
+		"description": "Complete API collection for Fudo Backend - Meal Planning System with Llama 3 Integration, AI Image Generation, Multiple Meal Options, and Comprehensive Reporting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"age\": 30,\n    \"weight\": 75,\n    \"height\": 175,\n    \"gender\": \"male\",\n    \"fitness_plan\": \"weight_loss\",\n    \"meal_type\": \"veg\",\n    \"workout_type\": \"gym\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "register"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.token) {",
+									"        pm.environment.set(\"auth_token\", jsonData.data.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "me"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/refresh",
+							"host": ["{{base_url}}"],
+							"path": ["api", "refresh"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "logout"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Details",
+			"item": [
+				{
+					"name": "Get Health Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-details"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Health Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"age\": 30,\n    \"weight\": 75,\n    \"height\": 175,\n    \"gender\": \"male\",\n    \"fitness_plan\": \"weight_loss\",\n    \"disease\": \"None\",\n    \"lifestyle\": \"Active\",\n    \"allergies\": \"Peanuts\",\n    \"workout_type\": \"gym\",\n    \"workout_intense_type\": \"Moderate\",\n    \"workout_time\": \"Morning 7-8 AM\",\n    \"meal_type\": \"veg\",\n    \"type_of_test\": \"General\",\n    \"ingredients\": [\"vegetables\", \"fruits\", \"grains\"],\n    \"ingredient_category\": \"veggies\",\n    \"food_preparation_materials\": [\"olive oil\", \"turmeric\", \"cumin\"],\n    \"bread_type\": \"Whole wheat\",\n    \"rice_type\": \"Brown rice\",\n    \"sprouts_material\": [\"mung beans\", \"chickpeas\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-details"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Health Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"weight\": 73,\n    \"fitness_plan\": \"muscle_building\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-details"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Health Details",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-details",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-details"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Llama AI",
+			"item": [
+				{
+					"name": "Check Llama Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/llama/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "llama", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Available Models",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/llama/models",
+							"host": ["{{base_url}}"],
+							"path": ["api", "llama", "models"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Health Recommendations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"health_recommendations\"\n}"
+						},
+						"description": "Get personalized health recommendations based on user's health profile",
+						"url": {
+							"raw": "{{base_url}}/api/llama/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "llama", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Meal Plan (Direct Llama)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"meal_plan\",\n    \"data\": {\n        \"plan_type\": \"daily\",\n        \"use_feedback\": false\n    }\n}"
+						},
+						"description": "Direct Llama meal plan generation (alternative to /meal-plans/generate)",
+						"url": {
+							"raw": "{{base_url}}/api/llama/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "llama", "generate"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meal Plans",
+			"item": [
+				{
+					"name": "Generate Meal Plan (Daily) - Today",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_type\": \"daily\",\n    \"date_type\": \"today\",\n    \"use_feedback\": false\n}"
+						},
+						"description": "Generates a daily meal plan for today with 3-4 meal options per meal time (breakfast, lunch, dinner). Each meal includes AI-generated real images, full recipes, and cooking instructions. User can then select their preferred option using the meal selection endpoint.",
+						"url": {
+							"raw": "{{base_url}}/api/meal-plans/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-plans", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Meal Plan (2 Days)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_type\": \"2_days\",\n    \"use_feedback\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-plans/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-plans", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Meal Plan (Weekly)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_type\": \"weekly\",\n    \"use_feedback\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-plans/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-plans", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Meal Plan with Feedback",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_type\": \"daily\",\n    \"use_feedback\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-plans/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-plans", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Next Day Meal Plan (Intelligent)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan_type\": \"daily\",\n    \"date_type\": \"next_day\",\n    \"use_feedback\": true\n}"
+						},
+						"description": "Generates intelligent next day meal plan based on yesterday's consumption analysis. Uses calorie deficit/surplus, skipped meals, timing patterns, and user feedback to create optimized suggestions.",
+						"url": {
+							"raw": "{{base_url}}/api/meal-plans/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-plans", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Meal Plans",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/meal-plans?is_active=true&plan_type=daily",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-plans"],
+							"query": [
+								{
+									"key": "is_active",
+									"value": "true"
+								},
+								{
+									"key": "plan_type",
+									"value": "daily"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Meal Plan by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/meal-plans/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-plans", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meal Selection",
+			"item": [
+				{
+					"name": "Select Meal Option",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/meals/1/select",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meals", "1", "select"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meal Tracking",
+			"item": [
+				{
+					"name": "Get Meal Reminders (Today)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/reminders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "reminders"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pending Meals (via History)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"description": "Get pending meals using history endpoint with status filter",
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/history?date=2026-01-02&status=pending",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "history"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-02"
+								},
+								{
+									"key": "status",
+									"value": "pending"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Meal Status - Ate (with consumption details)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ate\",\n    \"actual_time\": \"08:30\",\n    \"notes\": \"Had breakfast on time\",\n    \"consumed_calories\": 350,\n    \"portion_size\": \"full\",\n    \"modifications\": \"Added extra fruits\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/1/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "1", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Meal Status - Ate (half portion)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ate\",\n    \"actual_time\": \"08:30\",\n    \"portion_size\": \"half\",\n    \"modifications\": \"Reduced portion size\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/1/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "1", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Meal Status - Skipped",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"skipped\",\n    \"notes\": \"Not hungry\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/1/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "1", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Meal Status - Not Ate",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"not_ate\",\n    \"notes\": \"Forgot to eat\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/1/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "1", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Meal Status - To Be Had",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"to_be_had\",\n    \"notes\": \"Will have later\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/1/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "1", "status"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Meals Before Sleep",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2026-01-02\",\n    \"trackings\": [\n        {\n            \"id\": 1,\n            \"status\": \"ate\"\n        },\n        {\n            \"id\": 2,\n            \"status\": \"skipped\"\n        },\n        {\n            \"id\": 3,\n            \"status\": \"not_ate\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/mark-before-sleep",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "mark-before-sleep"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tracking History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/meal-tracking/history?date=2026-01-02&status=ate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meal-tracking", "history"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-02"
+								},
+								{
+									"key": "status",
+									"value": "ate"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Feedback",
+			"item": [
+				{
+					"name": "Submit Daily Feedback",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"feedback_date\": \"2026-01-02\",\n    \"meal_feedbacks\": [\n        {\n            \"meal_id\": 1,\n            \"rating\": 5,\n            \"liked\": true,\n            \"comments\": \"Loved the breakfast! Very filling.\"\n        },\n        {\n            \"meal_id\": 2,\n            \"rating\": 4,\n            \"liked\": true,\n            \"comments\": \"Good lunch, could use more protein\"\n        },\n        {\n            \"meal_id\": 3,\n            \"rating\": 3,\n            \"liked\": false,\n            \"comments\": \"Dinner was okay, but too bland\"\n        }\n    ],\n    \"overall_satisfaction\": 4,\n    \"liked_meals\": \"Oatmeal breakfast, Grilled chicken lunch\",\n    \"disliked_meals\": \"Plain salad dinner\",\n    \"suggestions\": \"Add more spices and variety to dinner meals\",\n    \"hunger_level_met\": true,\n    \"energy_level\": 4,\n    \"additional_notes\": \"Felt energetic throughout the day. Breakfast was perfect.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/feedback",
+							"host": ["{{base_url}}"],
+							"path": ["api", "feedback"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Feedback History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/feedback?date=2026-01-02&used_for_next_plan=false",
+							"host": ["{{base_url}}"],
+							"path": ["api", "feedback"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-02"
+								},
+								{
+									"key": "used_for_next_plan",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Evaluate Diet Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/feedback/evaluate?start_date=2026-01-01&end_date=2026-01-07",
+							"host": ["{{base_url}}"],
+							"path": ["api", "feedback", "evaluate"],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2026-01-01"
+								},
+								{
+									"key": "end_date",
+									"value": "2026-01-07"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home Page",
+			"item": [
+				{
+					"name": "Get Home Page Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"description": "Get today's meal plan with tracking status, selected meals, and calorie summary. Perfect for home screen.",
+						"url": {
+							"raw": "{{base_url}}/api/home",
+							"host": ["{{base_url}}"],
+							"path": ["api", "home"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Calories & Reports",
+			"item": [
+				{
+					"name": "Get Calorie Usage",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"description": "Get simple calorie usage for a specific date with breakdown by meal type",
+						"url": {
+							"raw": "{{base_url}}/api/calories/usage?date=2026-01-02",
+							"host": ["{{base_url}}"],
+							"path": ["api", "calories", "usage"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-02",
+									"description": "Date for calorie usage (default: today)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Daily Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"description": "Get detailed daily report with meal breakdown, yesterday comparison, and feedback",
+						"url": {
+							"raw": "{{base_url}}/api/reports/daily?date=2026-01-02",
+							"host": ["{{base_url}}"],
+							"path": ["api", "reports", "daily"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2026-01-02",
+									"description": "Date for report (default: today)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Weekly Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"description": "Get weekly report with trends and statistics",
+						"url": {
+							"raw": "{{base_url}}/api/reports/weekly?start_date=2026-01-01",
+							"host": ["{{base_url}}"],
+							"path": ["api", "reports", "weekly"],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2026-01-01",
+									"description": "Start date of the week (default: start of current week)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Progress Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"description": "Get progress report toward fitness goal",
+						"url": {
+							"raw": "{{base_url}}/api/reports/progress",
+							"host": ["{{base_url}}"],
+							"path": ["api", "reports", "progress"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "Generate Recipe from Ingredients",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"meal_type\": \"lunch\",\n    \"preferred_ingredients\": [\"Chicken\", \"Rice\"]\n}"
+						},
+						"description": "Generate a standalone recipe using user's available ingredients from health details. Optional preferred_ingredients can be added.",
+						"url": {
+							"raw": "{{base_url}}/api/recipes/generate",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recipes", "generate"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recipe_name\": \"Protein Omelette\",\n    \"description\": \"High protein breakfast\",\n    \"ingredients\": [\"Eggs\", \"Spinach\", \"Olive Oil\"],\n    \"food_preparation_materials\": [\"Olive Oil\", \"Turmeric\"],\n    \"calories\": 450,\n    \"protein\": 35,\n    \"carbs\": 20,\n    \"fats\": 25,\n    \"cooking_instructions\": \"Step-by-step instructions...\",\n    \"calorie_instructions\": \"High protein for muscle building\",\n    \"serving_size\": 1,\n    \"prep_time\": 5,\n    \"cook_time\": 10\n}"
+						},
+						"description": "Save a recipe for later use",
+						"url": {
+							"raw": "{{base_url}}/api/recipes",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recipes"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Saved Recipes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"description": "Get all saved recipes for the user",
+						"url": {
+							"raw": "{{base_url}}/api/recipes",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recipes"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+
